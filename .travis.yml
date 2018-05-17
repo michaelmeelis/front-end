@@ -16,15 +16,15 @@ install:
   - npm install
 
 env:
-  - GROUP=weaveworksdemos COMMIT="${TRAVIS_COMMIT}" TAG="${TRAVIS_TAG}" REPO=front-end;
+  - GROUP=eu.gcr.io/weavetest COMMIT="${TRAVIS_COMMIT}" TAG="${TRAVIS_TAG}" REPO=front-end;
 
 script:
   - make test
 
 after_success:
   - set -e
-  - if [ -z "${DOCKER_PASS}" ]; then echo "Build triggered by external PR. Skipping docker push" && exit 0; fi
-  - docker login -u "${DOCKER_USER}" -p "${DOCKER_PASS}";
+  - if [ -z "${GCLOUD_OAUTH}" ]; then echo "Build triggered by external PR. Skipping docker push" && exit 0; fi
+  - ${GCLOUD_OAUTH} | docker login -u oauth2accesstoken --password-stdin https://gcr.io;
   - ./scripts/build.sh
   - ./test/container.sh
   - ./scripts/push.sh
