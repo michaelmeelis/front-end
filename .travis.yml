@@ -24,7 +24,7 @@ script:
 after_success:
   - set -e
   - if [ -z "${GCLOUD_OAUTH}" ]; then echo "Build triggered by external PR. Skipping docker push" && exit 0; fi
-  - ${GCLOUD_OAUTH} | docker login -u oauth2accesstoken --password-stdin https://gcr.io;
+  - echo ${GCLOUD_OAUTH} | docker login -u oauth2accesstoken --password-stdin https://gcr.io;
   - ./scripts/build.sh
   - ./test/container.sh
   - ./scripts/push.sh
