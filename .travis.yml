@@ -16,7 +16,7 @@ install:
   - npm install
 
 env:
-  - GROUP=eu.gcr.io/weavetest COMMIT="${TRAVIS_COMMIT}" TAG="${TRAVIS_TAG}" REPO=front-end;
+  - GROUP=eu.gcr.io/prefab-pixel-197211 COMMIT="${TRAVIS_COMMIT}" TAG="${TRAVIS_TAG}" REPO=front-end;
 
 script:
   - make test
@@ -24,7 +24,7 @@ script:
 after_success:
   - set -e
   - if [ -z "${GCLOUD_OAUTH}" ]; then echo "Build triggered by external PR. Skipping docker push" && exit 0; fi
-  - echo ${GCLOUD_OAUTH} | docker login -u _json_key --password-stdin https://gcr.io;
+  - echo ${GCLOUD_OAUTH} | docker login -u _json_key --password-stdin https://eu.gcr.io;
   - ./scripts/build.sh
   - ./test/container.sh
   - ./scripts/push.sh
